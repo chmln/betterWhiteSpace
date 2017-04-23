@@ -25,3 +25,6 @@ This extension contributes the following self-explanatory settings:
 * `whitespace.color.dark`
 * `whitespace.color.light`
 
+---
+
+Credits to @spywhere for code structure
