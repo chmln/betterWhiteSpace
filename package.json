@@ -13,8 +13,17 @@
     "activationEvents": [
         "*"
     ],
+    "repository": {
+        "url": "https://github.com/chmln/betterWhiteSpace.git",
+        "type": "git"
+    },
+    "bugs": {
+        "url": "https://github.com/chmln/betterWhiteSpace/issues"
+    },
+    "homepage": "https://github.com/chmln/betterWhiteSpace",
+    "license": "MIT",
     "main": "./out/src/extension",
-    "icon": "./assets/icon.png",
+    "icon": "assets/icon.png",
     "contributes": {
          "configuration": {
             "type": "object",
