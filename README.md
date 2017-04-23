@@ -2,9 +2,6 @@
 
 Sublime-like tab and space rendering on selection for VSCode.
 
-## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
 
 #### Tab Rendering
 
