@@ -44,6 +44,8 @@ class WhiteSpace {
     private tabIndicator = ""; // tbd later based on tabSize
     private tabMargin = ""; // tbd later based on tabSize
 
+    private tabWidth = ""
+
     private overrideDefault = false;
     private disableExtension = false;
 
@@ -60,59 +62,51 @@ class WhiteSpace {
         }
     }
 
-    updateConfigurations(){
+    updateConfigurations() {
         this.clearDecorations();
-
         let configurations = vscode.workspace.getConfiguration("whitespace");
-        this.overrideDefault = configurations.get<boolean>("overrideDefault");
 
         let editorConfig = vscode.workspace.getConfiguration("editor");
-        let renderWhitespace = editorConfig.get<string>("renderWhitespace" );
-
+        let renderWhitespace = editorConfig.get("renderWhitespace");
         this.disableExtension = !this.overrideDefault && renderWhitespace !== "none";
-
         if (this.disableExtension) {
-            vscode.window.showInformationMessage(
-                `WhiteSpace detected that you set "editor.renderWhitespace" to "${
-                    renderWhitespace
-                }". The extension will now disabled.`
-            );
+            vscode.window.showInformationMessage(`WhiteSpace detected that you set "editor.renderWhitespace" to "${renderWhitespace}". The extension will now disabled.`);
         }
-
         this.editorTabSize = parseInt(editorConfig.get<string>("tabSize"));
         this.tabMargin = `0 -${this.editorTabSize}ch 0 0`;
-
+        this.tabWidth = `${this.editorTabSize}ch`;
         this.tabIndicator = this.editorTabSize % 4 === 0
-            ?  "⸻".repeat(this.editorTabSize/4)
+            ? "⸻".repeat(this.editorTabSize / 4)
             : this.editorTabSize % 2 === 0
                 ? "⸺"
                 : "—";
 
-        const darkColor = configurations.get<string>("color.dark", configurations.get<string>("color"));
-        const lightColor = configurations.get<string>("color.light", configurations.get<string>("color"));
-
-
+        const darkColor = configurations.get("color.dark", configurations.get("color"));
+        const lightColor = configurations.get("color.light", configurations.get("color"));
+        const emDashFont = "'Segoe UI', 'Source Sans Pro'";
+        
         ["space", "tab"].forEach(t => {
-            this[`${t}Decoration`] = vscode.window.createTextEditorDecorationType(
-                {
-                    light: {
-                        before: {
-                            contentText: this[`${t}Indicator`],
-                            margin: this[`${t}Margin`],
-                            color: lightColor
-                        }
-                    },
-                    dark: {
-                        before: {
-                            contentText: this[`${t}Indicator`],
-                            margin: this[`${t}Margin`],
-                            color: darkColor
-                        }
+            this[`${t}Decoration`] = vscode.window.createTextEditorDecorationType({
+                light: {
+                    before: {
+                        contentText: this[`${t}Indicator`],
+                        margin: this[`${t}Margin`],
+                        width: this[`${t}Width`],
+                        color: `${lightColor}`,
+                        textDecoration: `none; font-family: ${emDashFont}`
+                    }
+                },
+                dark: {
+                    before: {
+                        contentText: this[`${t}Indicator`],
+                        margin: this[`${t}Margin`],
+                        width: this[`${t}Width`],
+                        color: `${darkColor}`,
+                        textDecoration: `none; font-family: ${emDashFont}`
                     }
                 }
-             )
+            });
         });
-
         if (!this.disableExtension)
             this.updateDecorations();
     }
