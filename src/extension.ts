@@ -83,7 +83,7 @@ class WhiteSpace {
 
         const darkColor = configurations.get("color.dark", configurations.get("color"));
         const lightColor = configurations.get("color.light", configurations.get("color"));
-        const emDashFont = "'Segoe UI', 'Source Sans Pro'";
+        const emDashFont = editorConfig.get('fontFamily');
         
         ["space", "tab"].forEach(t => {
             this[`${t}Decoration`] = vscode.window.createTextEditorDecorationType({
